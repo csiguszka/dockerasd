@@ -1,0 +1,28 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: generate image tag
+      run: |
+        echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
+        
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: |
+        docker build . --file Dockerfile --tag ghcr.io/szabotaddeus/test-azure-webapp:$IMAGE_TAG
+        docker login ghcr.io -u szabotaddeus -p ${{secrets.GHCR_TOKEN}}
+        docker push ghcr.io/szabotaddeus/test-azure-webapp:$IMAGE_TAG
+        
