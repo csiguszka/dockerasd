@@ -23,6 +23,6 @@ jobs:
     - name: Build the Docker image
       run: |
         docker build . --file Dockerfile --tag ghcr.io/szabotaddeus/test-azure-webapp:$IMAGE_TAG
-        docker login ghcr.io -u szabotaddeus -p ${{secrets.GHCR_TOKEN}}
+        docker login ghcr.io -u szabotaddeus -p ${{secrets.code}}
         docker push ghcr.io/szabotaddeus/test-azure-webapp:$IMAGE_TAG
         
